@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<!--
+  Bluestone PIM Labs site template
+  Single-file documentation site matching the Labs visual identity.
+
+  Search "TODO" for every required customization.
+  Search "OPTIONAL" for things you can keep, remove, or adjust.
+
+  Deploy to Vercel: push to GitHub, connect repo, no build command needed.
+  The included vercel.json sets outputDirectory to "." so Vercel serves from root.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- TODO: Update title and description -->
+  <title>Your Project · Bluestone PIM Labs</title>
+  <meta name="description" content="One-sentence description of your project.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Your Project · Bluestone PIM Labs">
+  <meta property="og:description" content="One-sentence description of your project.">
+  <!-- TODO: Update og:image and og:url after deploying -->
+  <meta property="og:image" content="https://your-project.vercel.app/og-image.jpg">
+  <meta property="og:url" content="https://your-project.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your Project · Bluestone PIM Labs">
+  <meta name="twitter:description" content="One-sentence description of your project.">
+  <meta name="twitter:image" content="https://your-project.vercel.app/og-image.jpg">
+  <!-- TODO: Replace with your favicon -->
+  <link rel="icon" type="image/png" href="/bluestone_pim_logo.png">
+  <!-- Prevent flash of wrong theme before page renders -->
+  <script>
+    (function () {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script>tailwind.config = { darkMode: 'class' };</script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .nav-link.active { color: #2563eb; font-weight: 600; }
+    .dark .nav-link.active { color: #60a5fa; }
+    h2[id], h3[id] { scroll-margin-top: 8rem; }
+    .prose blockquote p::before, .prose blockquote p::after { content: none; }
+    h2 .anchor-link, h3 .anchor-link { opacity: 0; transition: opacity 0.15s; }
+    h2:hover .anchor-link, h3:hover .anchor-link { opacity: 1; }
+    .copy-md-btn.copy-md-success { color: #15803d; border-color: #86efac; background: #f0fdf4; }
+    .dark .copy-md-btn.copy-md-success { color: #4ade80; border-color: #166534; background: #052e16; }
+    /* Changelog badges */
+    .badge-new, .badge-improved, .badge-fixed, .badge-note {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 1px 7px; border-radius: 4px; margin-right: 4px;
+      vertical-align: middle; letter-spacing: 0.02em;
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+    .badge-new      { background: #dcfce7; color: #166534; }
+    .badge-improved { background: #dbeafe; color: #1e40af; }
+    .badge-fixed    { background: #fef9c3; color: #854d0e; }
+    .badge-note     { background: #f1f5f9; color: #475569; }
+    .dark .badge-new      { background: #14532d; color: #86efac; }
+    .dark .badge-improved { background: #1e3a5f; color: #93c5fd; }
+    .dark .badge-fixed    { background: #422006; color: #fde68a; }
+    .dark .badge-note     { background: #1e293b; color: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
+
+  <!-- Sticky top block: header + mobile nav -->
+  <div class="sticky top-0 z-20">
+  <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700/60">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center gap-3">
+      <!-- TODO: Replace with your logo, or keep the Labs logo -->
+      <img src="/bluestone_pim_logo.png" alt="Bluestone PIM" class="h-8 w-auto object-contain shrink-0">
+      <div class="flex-1 min-w-0">
+        <!-- TODO: Update project name -->
+        <span class="font-semibold text-slate-900 dark:text-slate-100 text-sm">Bluestone PIM Labs 🧪</span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- OPTIONAL: Remove beta badge when project is stable -->
+        <span class="text-sm bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-3 py-1.5 rounded-full font-medium">Beta</span>
+        <!-- TODO: Update GitHub URL -->
+        <a href="https://github.com/your-org/your-project" target="_blank" rel="noopener noreferrer"
+          aria-label="View source on GitHub"
+          class="p-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+          </svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle dark mode"
+          class="ml-1 p-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="hidden dark:block w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
+          </svg>
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="block dark:hidden w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- TODO: Update section links to match your h2 headings (lowercase, hyphens) -->
+  <nav id="mobile-nav" class="md:hidden bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700/60 px-6 overflow-x-auto">
+    <div class="flex gap-5 py-3 text-sm whitespace-nowrap">
+      <a href="#whats-new" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">What's new</a>
+      <a href="#overview" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Overview</a>
+      <a href="#getting-started" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Getting started</a>
+      <a href="#usage" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Usage</a>
+      <a href="#faq" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FAQ</a>
+      <a href="#contributing" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contributing</a>
+    </div>
+  </nav>
+
+  </div><!-- end sticky top block -->
+
+  <!-- Disclaimer banner -->
+  <div class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700/60">
+    <div class="max-w-5xl mx-auto px-6 py-2 flex items-start gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+      </svg>
+      <p class="text-sm text-slate-500 dark:text-slate-400">
+        A Bluestone PIM Labs community project. Not an official product. No SLA, no support commitments. Contributions and forks welcome.
+      </p>
+    </div>
+  </div>
+
+  <!-- Layout -->
+  <div class="max-w-5xl mx-auto px-6 py-10 flex gap-12">
+
+    <!-- TODO: Update sidebar links to match your sections -->
+    <aside class="hidden md:block w-48 shrink-0">
+      <nav class="sticky top-24">
+        <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">Contents</p>
+        <div class="space-y-0.5">
+          <a href="#whats-new" class="nav-link block text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 py-1.5 transition-colors">What's new</a>
+          <a href="#overview" class="nav-link block text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 py-1.5 transition-colors">Overview</a>
+          <a href="#getting-started" class="nav-link block text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 py-1.5 transition-colors">Getting started</a>
+          <a href="#usage" class="nav-link block text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 py-1.5 transition-colors">Usage</a>
+          <a href="#faq" class="nav-link block text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 py-1.5 transition-colors">FAQ</a>
+          <a href="#contributing" class="nav-link block text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 py-1.5 transition-colors">Contributing</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="min-w-0 flex-1">
+      <div id="content" class="prose prose-slate dark:prose-invert max-w-none
+        prose-headings:font-semibold
+        prose-h1:text-2xl prose-h1:mb-2
+        prose-h2:text-lg prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-200 dark:prose-h2:border-slate-700
+        prose-h3:text-base prose-h3:mt-6 prose-h3:mb-3
+        prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed
+        prose-li:text-slate-600 dark:prose-li:text-slate-300
+        prose-code:text-blue-700 dark:prose-code:text-blue-300 prose-code:bg-blue-50 dark:prose-code:bg-blue-950/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+        prose-pre:bg-slate-900 dark:prose-pre:bg-slate-800 prose-pre:text-slate-100
+        prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+        prose-blockquote:border-amber-400 dark:prose-blockquote:border-amber-600 prose-blockquote:bg-amber-50 dark:prose-blockquote:bg-amber-950/20 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-amber-800 dark:prose-blockquote:text-amber-300
+        prose-strong:text-slate-800 dark:prose-strong:text-slate-200
+        prose-table:text-sm prose-th:text-slate-700 dark:prose-th:text-slate-300 prose-td:text-slate-600 dark:prose-td:text-slate-400
+        prose-hr:border-slate-200 dark:prose-hr:border-slate-700">
+      </div>
+    </main>
+  </div>
+
+  <!--
+    TODO: Write your documentation here in Markdown.
+
+    Special syntax supported:
+      [screenshot: filename.webp]       renders an image from /images/filename.webp,
+                                        or a placeholder frame if the file name has no extension
+      [prompt: your text]               renders a blue user bubble
+      [reply: Claude's response]        renders a grey Claude reply bubble
+
+    Badge classes for changelog entries:
+      <span class="badge-new">New</span>
+      <span class="badge-improved">Improved</span>
+      <span class="badge-fixed">Fixed</span>
+      <span class="badge-note">Note</span>
+
+    Blockquotes render with an amber left border (good for warnings/notes):
+      > **Note:** your text here
+
+    Heading IDs are auto-generated from the heading text (lowercase, hyphens).
+    Keep sidebar nav hrefs in sync with your heading text.
+  -->
+  <script type="text/plain" id="md">
+# Your Project Name
+
+One sentence describing what this project does and who it is for. Keep it short: people should understand the purpose before scrolling.
+
+---
+
+## What's new
+
+- <span class="badge-new">New</span> **April 2026:** Initial release.
+
+---
+
+## Overview
+
+What is this project? Describe the problem it solves in 2-4 sentences. What does it connect, automate, or enable? Why does it exist as a community project rather than an official product?
+
+This page is built with the [Bluestone PIM Labs site template](https://github.com/bspim-labs/bluestone-pim-labs-site-template): a single HTML file with sidebar navigation, dark mode, and a copyable markdown source. Fork it for your own Labs project.
+
+---
+
+## Getting started
+
+What does a user need before they can use this project? List any prerequisites, credentials, or access requirements.
+
+| Requirement | Details |
+|---|---|
+| **Item one** | Where to find it |
+| **Item two** | Where to find it |
+
+### Step 1: Title
+
+Describe the first step. Add screenshots for UI flows.
+
+[screenshot: step-1.webp]
+
+### Step 2: Title
+
+Describe the next step.
+
+> **Note:** Use blockquotes for warnings, caveats, or anything the user should not miss.
+
+### Step 3: Connect
+
+Describe how the user completes the setup.
+
+---
+
+## Usage
+
+Show the project in action. Use screenshots for UI steps, or use the prompt/reply bubbles to show an AI conversation.
+
+[screenshot: usage-example.webp]
+
+[prompt: Show me an example prompt a user might type]
+
+[reply: And here is what Claude or your tool would respond with.]
+
+---
+
+## FAQ
+
+### What is this?
+
+Answer the most common question a first-time visitor will have.
+
+### Is this an official Bluestone PIM product?
+
+No. This is a Bluestone PIM Labs community project. Bluestone has not reviewed, endorsed, or supported it. No SLA, no support commitments.
+
+### Who built this?
+
+[Your name or org], as part of Bluestone PIM Labs. See the footer for links.
+
+---
+
+## Contributing
+
+This project is open source. Bug reports, improvements, and forks are welcome.
+
+For general Labs contribution guidelines, see [CONTRIBUTING.md](https://github.com/bspim-labs/bluestone-pim-labs/blob/main/CONTRIBUTING.md) in the Bluestone PIM Labs repo.
+
+  </script>
+
+  <script>
+    // Theme toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Custom markdown extensions
+    const raw = document.getElementById('md').textContent;
+
+    function promptBubble(text) {
+      return '<div class="not-prose my-3 flex justify-end items-end gap-2">' +
+        '<span class="text-xs text-slate-400 dark:text-slate-500 pb-1 shrink-0">You</span>' +
+        '<div class="bg-blue-600 text-white text-sm px-4 py-2.5 rounded-2xl rounded-br-sm shadow-sm max-w-sm leading-relaxed">' + text + '</div>' +
+        '</div>';
+    }
+
+    function replyBubble(text) {
+      return '<div class="not-prose my-3 flex items-end gap-2">' +
+        '<div class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-sm px-4 py-2.5 rounded-2xl rounded-bl-sm shadow-sm max-w-md leading-relaxed">' + text + '</div>' +
+        '<span class="text-xs text-slate-400 dark:text-slate-500 pb-1 shrink-0">Claude</span>' +
+        '</div>';
+    }
+
+    function screenshotHtml(label) {
+      // If the label looks like a filename, load it from /images/
+      if (/\.(png|jpe?g|webp|gif)$/i.test(label.trim())) {
+        return '<figure class="not-prose my-8">' +
+          '<img src="/images/' + label.trim() + '" alt="Screenshot" class="rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm w-full" />' +
+          '</figure>';
+      }
+      // Otherwise render a placeholder frame
+      return '<figure class="not-prose my-8 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 px-8 py-12 text-center">' +
+        '<span class="text-4xl">📷</span>' +
+        '<span class="text-sm font-medium text-slate-500 dark:text-slate-400">' + label + '</span>' +
+        '<span class="text-xs text-slate-400 dark:text-slate-500">Replace with screenshot</span>' +
+        '</figure>';
+    }
+
+    const processed = raw
+      .replace(/\[prompt: ([^\]]+)\]/g, function(_, text) { return promptBubble(text); })
+      .replace(/\[reply: ([^\]]+)\]/g, function(_, text) { return replyBubble(text); })
+      .replace(/\[screenshot: ([^\]]+)\]/g, function(_, label) { return screenshotHtml(label); });
+
+    marked.use({ breaks: false, gfm: true });
+    document.getElementById('content').innerHTML = marked.parse(processed);
+
+    // Copy page dropdown
+    (function() {
+      var COPY_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var MD_ICON = '<svg width="22" height="14" viewBox="0 0 80 50" fill="none" aria-hidden="true"><rect x="2" y="2" width="76" height="46" rx="8" stroke="currentColor" stroke-width="4"/><path d="M14 36V14L26 28L38 14V36M52 14V36M44 28L52 36L60 28" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var CHAT_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+      var EXT = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-left:3px;vertical-align:middle;" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+      var CHEV_DOWN = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+      var CHEV_UP   = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+
+      window.copyPageMd = function() {
+        window.closeCopyDropdown();
+        var content = document.getElementById('md').textContent;
+        navigator.clipboard.writeText(content).then(function() {
+          var btn = document.getElementById('copy-main-btn');
+          var label = document.getElementById('copy-main-label');
+          label.textContent = 'Copied!';
+          btn.classList.add('copy-md-success');
+          setTimeout(function() { label.textContent = 'Copy page'; btn.classList.remove('copy-md-success'); }, 2000);
+        }).catch(function() {
+          var label = document.getElementById('copy-main-label');
+          if (label) { label.textContent = 'Failed'; setTimeout(function() { label.textContent = 'Copy page'; }, 2000); }
+        });
+      };
+
+      window.viewPageMd = function() {
+        var blob = new Blob([document.getElementById('md').textContent], { type: 'text/plain; charset=utf-8' });
+        window.open(URL.createObjectURL(blob), '_blank');
+        window.closeCopyDropdown();
+      };
+
+      window.toggleCopyDropdown = function() {
+        var menu = document.getElementById('copy-dropdown-menu');
+        var icon = document.getElementById('copy-chevron-icon');
+        var btn  = document.getElementById('copy-chevron-btn');
+        var open = menu.style.display !== 'none';
+        menu.style.display = open ? 'none' : 'block';
+        icon.innerHTML = open ? CHEV_DOWN : CHEV_UP;
+        btn.setAttribute('aria-expanded', String(!open));
+      };
+
+      window.closeCopyDropdown = function() {
+        var menu = document.getElementById('copy-dropdown-menu');
+        var icon = document.getElementById('copy-chevron-icon');
+        var btn  = document.getElementById('copy-chevron-btn');
+        if (menu) menu.style.display = 'none';
+        if (icon) icon.innerHTML = CHEV_DOWN;
+        if (btn)  btn.setAttribute('aria-expanded', 'false');
+      };
+
+      document.addEventListener('click', function() { window.closeCopyDropdown(); });
+
+      function dropdownRow(iconSvg, title, sub, onclickAttr, href) {
+        var tag   = href ? 'a' : 'button';
+        var attrs = href
+          ? 'href="' + href + '" target="_blank" rel="noopener noreferrer" onclick="window.closeCopyDropdown()"'
+          : 'onclick="' + onclickAttr + '"';
+        return '<' + tag + ' ' + attrs +
+          ' style="display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;background:transparent;border:none;cursor:pointer;border-radius:12px;text-align:left;text-decoration:none;"' +
+          ' onmouseover="this.style.background=\'rgba(255,255,255,0.07)\'" onmouseout="this.style.background=\'transparent\'">' +
+          '<div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:center;color:#d4d4d4;flex-shrink:0;">' + iconSvg + '</div>' +
+          '<div>' +
+            '<div style="font-size:13.5px;font-weight:500;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;margin-bottom:2px;">' + title + '</div>' +
+            '<div style="font-size:12px;color:#777;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;">' + sub + '</div>' +
+          '</div>' +
+          '</' + tag + '>';
+      }
+
+      var openInClaudeUrl = 'https://claude.ai/new?q=' + encodeURIComponent('I want to ask questions about this page: ' + window.location.href);
+
+      // Insert copy pill after the first paragraph in #content
+      var firstPara = document.querySelector('#content p');
+      if (firstPara) {
+        var wrap = document.createElement('div');
+        wrap.className = 'not-prose mt-4';
+        wrap.style.cssText = 'position:relative;display:inline-block;';
+        wrap.innerHTML =
+          '<div id="copy-pill" class="inline-flex items-stretch border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-full">' +
+            '<button id="copy-main-btn" onclick="window.copyPageMd()" class="copy-md-btn inline-flex items-center gap-1.5 text-sm font-medium px-3.5 py-1.5 bg-transparent border-none cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors rounded-l-full" style="font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;">' +
+              COPY_ICON + '<span id="copy-main-label">Copy page</span>' +
+            '</button>' +
+            '<div class="bg-slate-200 dark:bg-slate-700" style="width:1px;margin:6px 0;flex-shrink:0;"></div>' +
+            '<button id="copy-chevron-btn" onclick="window.toggleCopyDropdown()" aria-label="More options" aria-expanded="false" class="inline-flex items-center px-2.5 bg-transparent border-none cursor-pointer text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors rounded-r-full">' +
+              '<span id="copy-chevron-icon">' + CHEV_DOWN + '</span>' +
+            '</button>' +
+          '</div>' +
+          '<div id="copy-dropdown-menu" style="display:none;position:absolute;left:0;top:calc(100% + 8px);background:#1c1c1e;border-radius:16px;padding:6px;min-width:290px;box-shadow:0 8px 32px rgba(0,0,0,0.35);z-index:100;">' +
+            dropdownRow(COPY_ICON, 'Copy page', 'Copy page as Markdown for LLMs', 'window.copyPageMd()', null) +
+            dropdownRow(MD_ICON, 'View as Markdown' + EXT, 'View this page as plain text', 'window.viewPageMd()', null) +
+            dropdownRow(CHAT_ICON, 'Open in Claude' + EXT, 'Ask questions about this page', null, openInClaudeUrl) +
+          '</div>';
+        firstPara.insertAdjacentElement('afterend', wrap);
+        document.getElementById('copy-pill').addEventListener('click', function(e) { e.stopPropagation(); });
+        document.getElementById('copy-dropdown-menu').addEventListener('click', function(e) { e.stopPropagation(); });
+      }
+    })();
+
+    // Generate heading IDs from text content
+    document.querySelectorAll('#content h2, #content h3').forEach(function(h) {
+      var slug = h.textContent.trim().toLowerCase()
+        .replace(/[^\w\s]/g, '').trim().replace(/\s+/g, '-');
+      if (slug) h.id = slug;
+    });
+
+    // Anchor links on headings
+    document.querySelectorAll('#content h2[id], #content h3[id]').forEach(function(h) {
+      var anchor = document.createElement('a');
+      anchor.href = '#' + h.id;
+      anchor.className = 'anchor-link ml-2 text-slate-300 dark:text-slate-600 hover:text-slate-400 dark:hover:text-slate-400 text-base font-normal no-underline';
+      anchor.setAttribute('aria-hidden', 'true');
+      anchor.textContent = '#';
+      h.appendChild(anchor);
+    });
+
+    // Sidebar active section tracking
+    const headings = document.querySelectorAll('#content h2');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function setActive(id) {
+      navLinks.forEach(function(link) {
+        var isActive = link.getAttribute('href') === '#' + id;
+        link.classList.toggle('active', isActive);
+        link.classList.toggle('text-blue-600', isActive);
+        link.classList.toggle('dark:text-blue-400', isActive);
+        link.classList.toggle('text-slate-500', !isActive);
+        link.classList.toggle('dark:text-slate-400', !isActive);
+      });
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+
+    headings.forEach(function(h) { observer.observe(h); });
+
+    // TODO: Update to current month/year before publishing
+    document.getElementById('last-updated').textContent = 'April 2026';
+  </script>
+
+  <!-- Footer -->
+  <footer class="mt-16 border-t border-slate-200 dark:border-slate-700/60">
+    <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-400 dark:text-slate-500">
+      <span>A Bluestone PIM Labs community project. Not an official product. Last updated <time id="last-updated">April 2026</time>.</span>
+      <span class="flex items-center gap-3">
+        <span>Built by</span>
+        <!-- TODO: Update name and LinkedIn URL, or remove this link -->
+        <a href="https://www.linkedin.com/in/your-profile/" target="_blank" rel="noopener noreferrer"
+          class="flex items-center gap-1 hover:text-slate-600 dark:hover:text-slate-300 transition-colors underline underline-offset-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          Your Name
+        </a>
+        <span>·</span>
+        <!-- TODO: Update GitHub URL -->
+        <a href="https://github.com/your-org/your-project" target="_blank" rel="noopener noreferrer"
+          class="flex items-center gap-1 hover:text-slate-600 dark:hover:text-slate-300 transition-colors underline underline-offset-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+          </svg>
+          View on GitHub
+        </a>
+      </span>
+    </div>
+  </footer>
+
+</body>
+</html>
